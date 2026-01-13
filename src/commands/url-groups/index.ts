@@ -22,6 +22,7 @@ import {
   spinner,
   UserCancelledError,
 } from '../../lib/ui/index.js';
+import { createUrlGroup } from './create.js';
 import { exploreGroups, viewAllEndpoints } from './list.js';
 
 /**
@@ -97,8 +98,7 @@ export async function runUrlGroupsMenu(): Promise<UrlGroupsMenuResult> {
           break;
 
         case 'create-new':
-          // TODO: Implement create group (subtask-4-4)
-          note('Create URL group coming soon!', 'Not Implemented');
+          await createUrlGroup(client);
           break;
 
         case 'delete-group':
