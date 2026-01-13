@@ -10,7 +10,6 @@ import { getConfigManager } from '../lib/config/manager.js';
 import {
   colors,
   intro,
-  note,
   outro,
   select,
   UserCancelledError,
@@ -22,6 +21,7 @@ import { runLogsMenu } from './logs/index.js';
 import { runMessagesMenu } from './messages/index.js';
 import { runQueuesMenu } from './queues/index.js';
 import { runSchedulesMenu } from './schedules/index.js';
+import { runSecurityMenu } from './security/index.js';
 import { runUrlGroupsMenu } from './url-groups/index.js';
 
 /**
@@ -169,8 +169,7 @@ export class MainMenu {
         break;
 
       case 'security':
-        // TODO: Implement security menu (subtask-10-1)
-        note('Signing keys management coming soon!', 'Not Implemented');
+        await runSecurityMenu();
         break;
 
       case 'config':

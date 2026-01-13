@@ -3,23 +3,23 @@
   "spec": "001-qstash-manager",
   "state": "building",
   "subtasks": {
-    "completed": 1,
+    "completed": 24,
     "total": 31,
     "in_progress": 1,
     "failed": 0
   },
   "phase": {
-    "current": "Project Foundation",
+    "current": "Security & Signing Keys",
     "id": null,
-    "total": 5
+    "total": 1
   },
   "workers": {
     "active": 0,
     "max": 1
   },
   "session": {
-    "number": 2,
-    "started_at": "2026-01-13T15:47:26.194893"
+    "number": 22,
+    "started_at": "2026-01-13T16:08:36.418855"
   },
-  "last_update": "2026-01-13T15:48:58.603110"
+  "last_update": "2026-01-13T17:11:40.372833"
 }

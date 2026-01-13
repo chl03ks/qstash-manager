@@ -81,3 +81,30 @@ Development Commands (after setup):
   npm link             # Test locally as CLI
 
 === END SESSION 1 ===
+
+=== SESSION 7: SUBTASK 3-1 ===
+Date: 2026-01-13
+
+Completed: subtask-3-1 - Create main CLI entry point with Commander.js and main menu navigation loop
+
+Files Modified:
+- src/index.ts - Updated with async action handler to launch interactive mode
+
+Files Created:
+- src/commands/index.ts - MainMenu class with navigation loop
+
+Implementation Details:
+- MainMenu class with shouldContinue flag for continuous navigation
+- Catches UserCancelledError for graceful Ctrl+C/ESC handling
+- Environment indicator showing token source (CLI/env/config)
+- Main menu with all 9 feature sections:
+  - URL Groups, Messages, Schedules, Queues, DLQ, Logs, Security, Config, Exit
+- Placeholder handlers with TODO comments referencing subtask IDs
+
+Commit: 1de341d
+
+Note: npm commands are blocked in this environment - verification command could not
+be run directly. Code follows patterns from reference qstash-url-groups.ts.
+Build verification must be done outside this session.
+
+=== END SESSION 7 ===
