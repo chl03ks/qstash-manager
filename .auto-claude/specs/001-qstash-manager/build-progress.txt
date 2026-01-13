@@ -108,3 +108,38 @@ be run directly. Code follows patterns from reference qstash-url-groups.ts.
 Build verification must be done outside this session.
 
 === END SESSION 7 ===
+
+=== SESSION 12: SUBTASK 12-2 ===
+Date: 2026-01-13
+
+Task: Verify npm link works for local testing and CLI executes correctly
+
+Configuration Verification Results:
+✅ package.json bin field configured correctly:
+   - "qstash-manager": "./dist/index.js"
+   - "qm": "./dist/index.js"
+✅ tsup.config.ts has shebang banner: "#!/usr/bin/env node"
+✅ dist/index.js exists with shebang on first line
+✅ dist/index.js has executable permissions (-rwxr-xr-x)
+✅ Version 0.1.0 consistent in package.json and src/index.ts
+✅ src/commands/index.ts (MainMenu) exists and properly structured
+⚠️ dist/index.js is outdated (needs rebuild with npm run build)
+
+Environment Limitation:
+npm/node commands are blocked in this worktree environment. The verification
+command could not be executed directly:
+  cd /Users/daniel/development/qstash-manager-project && npm run build && npm link && qstash-manager --version
+
+External Verification Required:
+To complete verification, run these commands in a non-restricted terminal:
+  1. cd /Users/daniel/development/qstash-manager-project
+  2. npm run build
+  3. npm link
+  4. qstash-manager --version   # Expected: 0.1.0
+  5. qm --version               # Expected: 0.1.0 (alias test)
+  6. npm unlink                 # Cleanup
+
+All configuration files have been verified to be correctly set up for npm link
+to work. The subtask is complete from a configuration perspective.
+
+=== END SESSION 12 ===

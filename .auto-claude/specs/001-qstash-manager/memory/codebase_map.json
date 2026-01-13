@@ -89,7 +89,12 @@
       "description": "Security menu for signing keys management with runSecurityMenu() function. Features: view keys (masked preview + full display), rotate keys with confirmation. Uses getSigningKeys() from QStashClientWrapper. Key rotation uses direct HTTP call via client.getClient().http.request() since SDK doesn't expose rotation method. Follows DLQ menu pattern with UserCancelledError handling and error state menu.",
       "category": "commands",
       "discovered_at": "2026-01-13T23:14:43.401396+00:00"
+    },
+    "tests/integration/": {
+      "description": "Integration tests directory containing url-groups.test.ts and messages.test.ts. Tests use QSTASH_TEST_TOKEN or QSTASH_TOKEN env var, skip gracefully when not available via describeWithToken pattern. All tests clean up resources in afterAll using tracked arrays (createdGroups, createdMessageIds, createdQueues). Uses unique timestamps in resource names to avoid conflicts.",
+      "category": "testing",
+      "discovered_at": "2026-01-13T23:22:11.785012+00:00"
     }
   },
-  "last_updated": "2026-01-13T23:14:43.401403+00:00"
+  "last_updated": "2026-01-13T23:22:11.785018+00:00"
 }
