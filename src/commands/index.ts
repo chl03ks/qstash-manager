@@ -20,6 +20,7 @@ import { runSetupWizard, shouldRunSetupWizard } from './config/setup.js';
 import { runLogsMenu } from './logs/index.js';
 import { runMessagesMenu } from './messages/index.js';
 import { runQueuesMenu } from './queues/index.js';
+import { runSchedulesMenu } from './schedules/index.js';
 import { runUrlGroupsMenu } from './url-groups/index.js';
 
 /**
@@ -151,8 +152,7 @@ export class MainMenu {
         break;
 
       case 'schedules':
-        // TODO: Implement schedules menu (subtask-8-1)
-        note('Schedules management coming soon!', 'Not Implemented');
+        await runSchedulesMenu();
         break;
 
       case 'queues':
