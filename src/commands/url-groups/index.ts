@@ -22,6 +22,7 @@ import {
   spinner,
   UserCancelledError,
 } from '../../lib/ui/index.js';
+import { exploreGroups, viewAllEndpoints } from './list.js';
 
 /**
  * Result of running the URL groups menu
@@ -73,8 +74,11 @@ export async function runUrlGroupsMenu(): Promise<UrlGroupsMenuResult> {
             log(colors.warning('No groups to explore. Create one first!'));
             await pause(1500);
           } else {
-            // TODO: Implement explore groups (subtask-4-2)
-            note('Explore URL groups coming soon!', 'Not Implemented');
+            const exploreResult = await exploreGroups(groups, client);
+            if (exploreResult.returnToMain) {
+              return { returnToMain: true };
+            }
+            // If goBack, continue the menu loop
           }
           break;
 
@@ -88,8 +92,7 @@ export async function runUrlGroupsMenu(): Promise<UrlGroupsMenuResult> {
             log(colors.warning('No endpoints to view. Create a group first!'));
             await pause(1500);
           } else {
-            // TODO: Implement view all endpoints (subtask-4-2)
-            note('View all endpoints coming soon!', 'Not Implemented');
+            await viewAllEndpoints(groups);
           }
           break;
 
