@@ -17,6 +17,7 @@ import {
 } from '../lib/ui/index.js';
 import { runConfigMenu } from './config/index.js';
 import { runSetupWizard, shouldRunSetupWizard } from './config/setup.js';
+import { runDlqMenu } from './dlq/index.js';
 import { runLogsMenu } from './logs/index.js';
 import { runMessagesMenu } from './messages/index.js';
 import { runQueuesMenu } from './queues/index.js';
@@ -160,8 +161,7 @@ export class MainMenu {
         break;
 
       case 'dlq':
-        // TODO: Implement DLQ menu (subtask-9-1)
-        note('Dead Letter Queue management coming soon!', 'Not Implemented');
+        await runDlqMenu();
         break;
 
       case 'logs':
