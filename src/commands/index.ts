@@ -15,6 +15,7 @@ import {
   select,
   UserCancelledError,
 } from '../lib/ui/index.js';
+import { runSetupWizard, shouldRunSetupWizard } from './config/setup.js';
 
 /**
  * Main menu manager for the QStash CLI
@@ -30,19 +31,21 @@ export class MainMenu {
     intro('🚀 QStash Manager');
 
     // Check if we need first-run setup
-    if (!this.configManager.hasEnvironments()) {
-      // Token might be available from environment variable
-      const tokenResult = this.configManager.resolveToken();
-      if (!tokenResult) {
-        note(
-          'No configuration found. Run the setup wizard to get started.\n\n' +
-            'You can also set the QSTASH_TOKEN environment variable.',
-          'First Run'
-        );
-        // TODO: Launch setup wizard when implemented (subtask-3-2)
-        // For now, exit with a helpful message
-        outro(colors.warning('Please set QSTASH_TOKEN or run setup wizard.'));
-        return;
+    if (shouldRunSetupWizard()) {
+      try {
+        const setupResult = await runSetupWizard();
+        if (!setupResult.success) {
+          outro(colors.warning(setupResult.error || 'Setup was not completed.'));
+          return;
+        }
+        // Clear cached config to pick up new environments
+        this.configManager.clearCache();
+      } catch (error) {
+        if (error instanceof UserCancelledError) {
+          outro(colors.muted('Setup cancelled. Run again when you\'re ready!'));
+          return;
+        }
+        throw error;
       }
     }
 
