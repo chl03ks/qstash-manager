@@ -1,0 +1,44 @@
+# Source files (only dist is published)
+src/
+tests/
+*.ts
+!*.d.ts
+
+# Config files
+tsconfig.json
+tsup.config.ts
+vitest.config.ts
+.eslintrc.json
+
+# Development files
+.git/
+.github/
+.vscode/
+.idea/
+
+# Auto-Claude files
+.auto-claude/
+.auto-claude-status
+.claude_settings.json
+
+# Design and documentation (README is included via package.json files)
+DESIGN.md
+IMPLEMENTATION_PROMPT.md
+CHANGELOG.md
+
+# Package manager files
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Test coverage
+coverage/
+
+# Environment files
+.env
+.env.*
+
+# OS files
+.DS_Store
+Thumbs.db
