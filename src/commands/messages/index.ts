@@ -14,12 +14,13 @@ import { getConfigManager } from '../../lib/config/manager.js';
 import { createQStashClient, type QStashClientWrapper } from '../../lib/qstash/index.js';
 import {
   colors,
-  log,
   note,
   select,
   UserCancelledError,
 } from '../../lib/ui/index.js';
+import { cancelMessage } from './cancel.js';
 import { sendMessage } from './send.js';
+import { trackMessage } from './track.js';
 
 /**
  * Result of running the messages menu
@@ -63,13 +64,11 @@ export async function runMessagesMenu(): Promise<MessagesMenuResult> {
           break;
 
         case 'track':
-          // TODO: Implement message tracking (subtask-5-3)
-          note('Message tracking coming soon!', 'Not Implemented');
+          await trackMessage(client);
           break;
 
         case 'cancel':
-          // TODO: Implement message cancellation (subtask-5-4)
-          note('Message cancellation coming soon!', 'Not Implemented');
+          await cancelMessage(client);
           break;
 
         case 'back':
