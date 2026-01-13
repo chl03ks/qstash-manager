@@ -24,6 +24,7 @@ import {
 } from '../../lib/ui/index.js';
 import { createUrlGroup } from './create.js';
 import { exploreGroups, viewAllEndpoints } from './list.js';
+import { deleteUrlGroup } from './manage.js';
 
 /**
  * Result of running the URL groups menu
@@ -106,8 +107,7 @@ export async function runUrlGroupsMenu(): Promise<UrlGroupsMenuResult> {
             log(colors.warning('No groups to delete.'));
             await pause(1500);
           } else {
-            // TODO: Implement delete group (subtask-4-5)
-            note('Delete URL group coming soon!', 'Not Implemented');
+            await deleteUrlGroup(groups, client);
           }
           break;
 

@@ -19,6 +19,7 @@ import {
   spinner,
   UserCancelledError,
 } from '../../lib/ui/index.js';
+import { addEndpointToGroup, removeEndpointFromGroup } from './manage.js';
 
 /**
  * Result of exploring/managing URL groups
@@ -197,18 +198,14 @@ export async function manageGroup(
 
       switch (action) {
         case 'add-endpoint':
-          // TODO: Implement in subtask-4-3 (quick-update will provide this functionality)
-          log(colors.warning('Add/Update endpoint will be available in a future update'));
-          await pause(1500);
+          await addEndpointToGroup(groupName, group, client);
           break;
         case 'remove-endpoint':
           if (!hasEndpoints) {
             log(colors.warning('No endpoints to remove'));
             await pause(1000);
           } else {
-            // TODO: Implement in subtask-4-3 or later
-            log(colors.warning('Remove endpoint will be available in a future update'));
-            await pause(1500);
+            await removeEndpointFromGroup(groupName, group, client);
           }
           break;
         case 'back':
