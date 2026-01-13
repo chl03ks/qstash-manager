@@ -17,6 +17,7 @@ import {
 } from '../lib/ui/index.js';
 import { runConfigMenu } from './config/index.js';
 import { runSetupWizard, shouldRunSetupWizard } from './config/setup.js';
+import { runUrlGroupsMenu } from './url-groups/index.js';
 
 /**
  * Main menu manager for the QStash CLI
@@ -139,8 +140,7 @@ export class MainMenu {
   private async handleAction(action: MainMenuAction): Promise<void> {
     switch (action) {
       case 'url-groups':
-        // TODO: Implement URL groups menu (subtask-4-1)
-        note('URL Groups management coming soon!', 'Not Implemented');
+        await runUrlGroupsMenu();
         break;
 
       case 'messages':
