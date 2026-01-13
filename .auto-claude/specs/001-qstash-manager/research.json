@@ -1,0 +1,484 @@
+{
+  "integrations_researched": [
+    {
+      "name": "@upstash/qstash",
+      "type": "library",
+      "verified_package": {
+        "name": "@upstash/qstash",
+        "install_command": "npm install @upstash/qstash",
+        "version": "^2.8.4",
+        "verified": true
+      },
+      "api_patterns": {
+        "imports": [
+          "import { Client } from '@upstash/qstash';"
+        ],
+        "initialization": "const client = new Client({ token: '<QSTASH_TOKEN>' });",
+        "key_functions": [
+          "client.publishJSON({ url, body })",
+          "client.urlGroups.list()",
+          "client.urlGroups.get(name)",
+          "client.urlGroups.addEndpoints({ name, endpoints })",
+          "client.urlGroups.removeEndpoints({ name, endpoints })",
+          "client.urlGroups.delete(name)",
+          "client.schedules.create({ destination, cron })",
+          "client.schedules.get(id)",
+          "client.schedules.list()",
+          "client.schedules.delete(id)",
+          "client.schedules.pause(id)",
+          "client.schedules.resume(id)",
+          "client.queues.list()",
+          "client.queues.get(name)",
+          "client.queues.delete(name)",
+          "client.queues.pause(name)",
+          "client.queues.resume(name)",
+          "client.dlq.list()",
+          "client.dlq.delete(id)",
+          "client.dlq.deleteMany(ids)",
+          "Receiver.verify({ signature, body, currentSigningKey, nextSigningKey })"
+        ],
+        "verified_against": "Existing code in prefix/src/cli/commands/qstash-url-groups.ts + Upstash docs"
+      },
+      "configuration": {
+        "env_vars": ["QSTASH_TOKEN"],
+        "config_files": [],
+        "dependencies": [],
+        "optional_env_vars": ["UPSTASH_DISABLE_TELEMETRY"]
+      },
+      "infrastructure": {
+        "requires_docker": false,
+        "external_service": "QStash cloud service (https://console.upstash.com/qstash)",
+        "notes": "HTTP-based messaging service - no local infrastructure needed"
+      },
+      "gotchas": [
+        "Default retry is 6 attempts with exponential backoff",
+        "Token required for all operations",
+        "Node 18+ recommended; older versions need fetch polyfill",
+        "SDK collects anonymous telemetry by default (can be disabled)",
+        "HTTPS URLs required for endpoints (no HTTP)",
+        "URL groups are also called 'topics' in older documentation"
+      ],
+      "research_sources": [
+        "https://www.npmjs.com/package/@upstash/qstash",
+        "https://github.com/upstash/qstash-js",
+        "https://upstash.com/docs/qstash/sdks/ts/gettingstarted",
+        "Verified working implementation in prefix codebase"
+      ]
+    },
+    {
+      "name": "@clack/prompts",
+      "type": "library",
+      "verified_package": {
+        "name": "@clack/prompts",
+        "install_command": "npm install @clack/prompts",
+        "version": "^0.11.0",
+        "verified": true
+      },
+      "api_patterns": {
+        "imports": [
+          "import { intro, outro, text, select, confirm, spinner, note, cancel, isCancel } from '@clack/prompts';"
+        ],
+        "initialization": "No initialization required - import and use directly",
+        "key_functions": [
+          "intro(message)",
+          "outro(message)",
+          "text({ message, placeholder?, validate? })",
+          "select({ message, options: { value, label, hint? }[] })",
+          "confirm({ message, initialValue? })",
+          "spinner()",
+          "note(message, title?)",
+          "cancel(message)",
+          "isCancel(value)"
+        ],
+        "verified_against": "Existing code patterns in prefix qstash-url-groups.ts"
+      },
+      "configuration": {
+        "env_vars": [],
+        "config_files": [],
+        "dependencies": []
+      },
+      "infrastructure": {
+        "requires_docker": false
+      },
+      "gotchas": [
+        "Use isCancel() to handle Ctrl+C gracefully - prevents crashes",
+        "Spinner has start() and stop(message) methods",
+        "Select options should have value, label, and optional hint",
+        "Existing code wraps clack prompts in custom utilities for consistent UX",
+        "Stream APIs available for LLM/async content"
+      ],
+      "research_sources": [
+        "https://www.npmjs.com/package/@clack/prompts",
+        "https://www.clack.cc/",
+        "Verified patterns from prefix/src/cli/utils/prompts.ts"
+      ]
+    },
+    {
+      "name": "commander",
+      "type": "library",
+      "verified_package": {
+        "name": "commander",
+        "install_command": "npm install commander",
+        "version": "^12.0.0",
+        "verified": true
+      },
+      "api_patterns": {
+        "imports": [
+          "import { Command } from 'commander';",
+          "import { program } from 'commander';"
+        ],
+        "initialization": "const program = new Command();",
+        "key_functions": [
+          "program.name(name)",
+          "program.description(desc)",
+          "program.version(version)",
+          "program.option('-f, --flag <value>', 'description')",
+          "program.command('subcommand')",
+          "program.action(async (options) => {})",
+          "program.parse()",
+          "program.addCommand(cmd)"
+        ],
+        "verified_against": "Existing code in prefix qstash-url-groups.ts command definition"
+      },
+      "configuration": {
+        "env_vars": [],
+        "config_files": [],
+        "dependencies": []
+      },
+      "infrastructure": {
+        "requires_docker": false
+      },
+      "gotchas": [
+        "Requires Node.js v20+ for current version (v12.x)",
+        "TypeScript types included in package",
+        "Supports ESM and CommonJS",
+        "Auto-generates help output",
+        "For strict mode, use program.parse() at the end"
+      ],
+      "research_sources": [
+        "https://www.npmjs.com/package/commander",
+        "https://github.com/tj/commander.js",
+        "Verified patterns from prefix/src/cli/commands/"
+      ]
+    },
+    {
+      "name": "picocolors",
+      "type": "library",
+      "verified_package": {
+        "name": "picocolors",
+        "install_command": "npm install picocolors",
+        "version": "^1.1.1",
+        "verified": true
+      },
+      "api_patterns": {
+        "imports": [
+          "import pc from 'picocolors';",
+          "import { red, green, blue, bold, dim } from 'picocolors';"
+        ],
+        "initialization": "No initialization - import and use directly",
+        "key_functions": [
+          "pc.red(text)",
+          "pc.green(text)",
+          "pc.blue(text)",
+          "pc.yellow(text)",
+          "pc.cyan(text)",
+          "pc.magenta(text)",
+          "pc.white(text)",
+          "pc.gray(text)",
+          "pc.bold(text)",
+          "pc.dim(text)",
+          "pc.underline(text)",
+          "pc.bgRed(text)",
+          "pc.bgGreen(text)",
+          "pc.isColorSupported",
+          "pc.createColors(enabled)"
+        ],
+        "verified_against": "npm package documentation"
+      },
+      "configuration": {
+        "env_vars": ["NO_COLOR"],
+        "config_files": [],
+        "dependencies": []
+      },
+      "infrastructure": {
+        "requires_docker": false
+      },
+      "gotchas": [
+        "14x smaller and 2x faster than chalk",
+        "Only 7KB vs chalk's 101KB",
+        "Respects NO_COLOR environment variable",
+        "Functions can be nested: pc.bold(pc.red('text'))",
+        "TypeScript types included"
+      ],
+      "research_sources": [
+        "https://www.npmjs.com/package/picocolors",
+        "https://github.com/alexeyraspopov/picocolors"
+      ]
+    },
+    {
+      "name": "cli-table3",
+      "type": "library",
+      "verified_package": {
+        "name": "cli-table3",
+        "install_command": "npm install cli-table3",
+        "version": "^0.6.5",
+        "verified": true
+      },
+      "api_patterns": {
+        "imports": [
+          "import Table from 'cli-table3';"
+        ],
+        "initialization": "const table = new Table({ head: ['Col1', 'Col2'], colWidths: [20, 50] });",
+        "key_functions": [
+          "new Table({ head, colWidths?, chars?, style? })",
+          "table.push([row, data])",
+          "table.toString()"
+        ],
+        "verified_against": "Existing createTable utility in prefix codebase"
+      },
+      "configuration": {
+        "env_vars": [],
+        "config_files": [],
+        "dependencies": []
+      },
+      "infrastructure": {
+        "requires_docker": false
+      },
+      "gotchas": [
+        "API compatible with original cli-table package",
+        "Supports cells spanning multiple columns/rows",
+        "Custom styles per cell (border colors, padding)",
+        "Handles ANSI color codes in cell content",
+        "Word wrapping available"
+      ],
+      "research_sources": [
+        "https://www.npmjs.com/package/cli-table3",
+        "https://github.com/cli-table/cli-table3",
+        "Existing patterns in prefix/src/cli/utils/table.ts"
+      ]
+    },
+    {
+      "name": "tsup",
+      "type": "library",
+      "verified_package": {
+        "name": "tsup",
+        "install_command": "npm install -D tsup",
+        "version": "^8.0.0",
+        "verified": true
+      },
+      "api_patterns": {
+        "imports": [
+          "import { defineConfig } from 'tsup';"
+        ],
+        "initialization": "tsup.config.ts file with defineConfig()",
+        "key_functions": [
+          "defineConfig({ entry, format, dts, sourcemap, clean, minify, bundle, banner })"
+        ],
+        "verified_against": "tsup documentation and DESIGN.md spec"
+      },
+      "configuration": {
+        "env_vars": [],
+        "config_files": ["tsup.config.ts"],
+        "dependencies": ["typescript"]
+      },
+      "infrastructure": {
+        "requires_docker": false
+      },
+      "gotchas": [
+        "Uses esbuild under the hood - very fast",
+        "Supports ESM and CJS output",
+        "Built-in TypeScript declaration generation (dts: true)",
+        "For CLI tools, use banner: { js: '#!/usr/bin/env node' }",
+        "watch mode available for development"
+      ],
+      "research_sources": [
+        "https://www.npmjs.com/package/tsup",
+        "https://github.com/egoist/tsup",
+        "https://tsup.egoist.dev/"
+      ]
+    },
+    {
+      "name": "vitest",
+      "type": "library",
+      "verified_package": {
+        "name": "vitest",
+        "install_command": "npm install -D vitest",
+        "version": "^1.2.0",
+        "verified": true
+      },
+      "api_patterns": {
+        "imports": [
+          "import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';",
+          "import { defineConfig } from 'vitest/config';"
+        ],
+        "initialization": "vitest.config.ts with defineConfig() or add to vite.config.ts",
+        "key_functions": [
+          "describe('suite', () => {})",
+          "it('test', () => {})",
+          "expect(value).toBe(expected)",
+          "expect(value).toEqual(expected)",
+          "vi.mock(module)",
+          "vi.spyOn(obj, method)",
+          "vi.fn()"
+        ],
+        "verified_against": "vitest documentation"
+      },
+      "configuration": {
+        "env_vars": [],
+        "config_files": ["vitest.config.ts"],
+        "dependencies": []
+      },
+      "infrastructure": {
+        "requires_docker": false
+      },
+      "gotchas": [
+        "Compatible with Jest API - easy migration",
+        "Native ESM and TypeScript support",
+        "Hot module replacement in watch mode",
+        "Coverage via @vitest/coverage-v8",
+        "Can read vite.config.ts for shared config"
+      ],
+      "research_sources": [
+        "https://vitest.dev/",
+        "https://vitest.dev/config/",
+        "https://vitest.dev/guide/"
+      ]
+    },
+    {
+      "name": "TypeScript",
+      "type": "library",
+      "verified_package": {
+        "name": "typescript",
+        "install_command": "npm install -D typescript",
+        "version": "^5.3.0",
+        "verified": true
+      },
+      "api_patterns": {
+        "imports": [],
+        "initialization": "tsconfig.json configuration file",
+        "key_functions": [
+          "tsc --noEmit (typecheck only)",
+          "tsc (compile)"
+        ],
+        "verified_against": "TypeScript documentation and DESIGN.md"
+      },
+      "configuration": {
+        "env_vars": [],
+        "config_files": ["tsconfig.json"],
+        "dependencies": [],
+        "recommended_config": {
+          "target": "ES2022",
+          "module": "ESNext",
+          "moduleResolution": "bundler",
+          "strict": true,
+          "esModuleInterop": true
+        }
+      },
+      "infrastructure": {
+        "requires_docker": false
+      },
+      "gotchas": [
+        "Use moduleResolution: 'bundler' with tsup",
+        "ES2022 target for modern Node.js features",
+        "strict mode enabled as per requirements",
+        "Types included in most packages"
+      ],
+      "research_sources": [
+        "https://www.typescriptlang.org/",
+        "DESIGN.md specification"
+      ]
+    }
+  ],
+  "existing_code_patterns": {
+    "source_file": "/Users/daniel/development/prefix/src/cli/commands/qstash-url-groups.ts",
+    "patterns_to_preserve": [
+      {
+        "pattern": "Interactive menu loop",
+        "description": "while (this.shouldContinue) loop with graceful Ctrl+C handling",
+        "code_example": "while (this.shouldContinue) { try { await this.showMainMenu(); } catch (error) { if (error.message.includes('User cancelled')) { this.shouldContinue = false; } } }"
+      },
+      {
+        "pattern": "Spinner wrapper",
+        "description": "Custom spinner function for async operations",
+        "code_example": "await spinner('Loading...', async () => { return await this.client.operation(); })"
+      },
+      {
+        "pattern": "Back navigation",
+        "description": "All menus have '__back__' option for returning to previous menu",
+        "code_example": "groupOptions.push({ value: '__back__', label: '← Back to main menu', hint: '' })"
+      },
+      {
+        "pattern": "Select with hints",
+        "description": "Menu options include value, label, and hint",
+        "code_example": "{ value: 'explore', label: '🔍 Explore', hint: 'View and manage' }"
+      },
+      {
+        "pattern": "URL validation",
+        "description": "HTTPS requirement with helpful error messages",
+        "code_example": "if (parsedUrl.protocol !== 'https:') { return { isValid: false, error: 'QStash requires HTTPS URLs' }; }"
+      },
+      {
+        "pattern": "Error handling",
+        "description": "handleApiError() method with user-friendly messages",
+        "code_example": "if (error.message.includes('401')) { return 'Authentication failed. Please check your token.'; }"
+      },
+      {
+        "pattern": "Confirmation for destructive actions",
+        "description": "confirm() with default false for dangerous operations",
+        "code_example": "await confirm('Are you ABSOLUTELY sure?', false)"
+      },
+      {
+        "pattern": "Note previews",
+        "description": "Show preview of changes before confirming",
+        "code_example": "note([`Group: ${groupName}`, `URL: ${url}`].join('\\n'), 'Preview')"
+      }
+    ],
+    "dependencies_to_remove": [
+      {
+        "import": "BaseCommand",
+        "reason": "Prefix-specific base class - create standalone equivalent"
+      },
+      {
+        "import": "cliLogger",
+        "reason": "Internal logging - replace with console or custom logger"
+      },
+      {
+        "import": "logStructured",
+        "reason": "Prefix-specific structured logging - remove or replace"
+      }
+    ]
+  },
+  "unverified_claims": [],
+  "recommendations": [
+    {
+      "recommendation": "Reuse clack/prompts wrapper patterns from existing code",
+      "rationale": "The prefix codebase has proven patterns for spinner, select, confirm, text that handle cancellation gracefully"
+    },
+    {
+      "recommendation": "Keep the exact menu structure and navigation from existing qstash-url-groups.ts",
+      "rationale": "The UX is already polished and working - no need to reinvent"
+    },
+    {
+      "recommendation": "Create a custom logger to replace cliLogger",
+      "rationale": "Simple console wrappers with colors will suffice - no external dependency needed"
+    },
+    {
+      "recommendation": "Use conf or @sindresorhus/conf for config file management",
+      "rationale": "Or implement simple JSON file handling in ~/.qstash-manager/config.json as specified in DESIGN.md"
+    },
+    {
+      "recommendation": "Pin @clack/prompts to ^0.7.0 or ^0.11.0",
+      "rationale": "Latest version is 0.11.0, but 0.7.0 is specified in DESIGN.md package.json"
+    },
+    {
+      "recommendation": "Verify Node 18+ for native fetch support",
+      "rationale": "@upstash/qstash SDK requires fetch - Node 18+ has it built-in"
+    }
+  ],
+  "version_compatibility": {
+    "node": ">=18.0.0",
+    "notes": "Native fetch support in Node 18+ eliminates need for polyfills"
+  },
+  "context7_libraries_used": [],
+  "created_at": "2026-01-13T12:00:00Z"
+}

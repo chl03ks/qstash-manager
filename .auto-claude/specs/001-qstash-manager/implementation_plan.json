@@ -1,0 +1,929 @@
+{
+  "feature": "QStash Manager CLI Tool",
+  "workflow_type": "feature",
+  "workflow_rationale": "This is a new standalone NPM package being built from scratch with comprehensive features. While adapting patterns from existing code, the project requires greenfield setup with multiple feature modules, configuration management, and NPM publishing setup. The 5-week scope with phased delivery aligns with feature workflow.",
+  "created_at": "2026-01-13T21:33:30.917Z",
+  "updated_at": "2026-01-13T21:47:06.494Z",
+  "status": "in_progress",
+  "phases": [
+    {
+      "id": "phase-1-setup",
+      "name": "Project Foundation",
+      "type": "setup",
+      "description": "Create the NPM package structure with TypeScript, tsup bundler, and vitest testing framework",
+      "depends_on": [],
+      "parallel_safe": false,
+      "subtasks": [
+        {
+          "id": "subtask-1-1",
+          "description": "Create package.json with NPM configuration, bin entries, and dependencies",
+          "service": "qstash-manager",
+          "files_to_modify": [],
+          "files_to_create": [
+            "package.json"
+          ],
+          "patterns_from": [
+            "DESIGN.md"
+          ],
+          "verification": {
+            "type": "command",
+            "command": "cd /Users/daniel/development/qstash-manager-project && cat package.json | grep -q '\"name\": \"qstash-manager\"' && echo 'OK'",
+            "expected": "OK"
+          },
+          "status": "completed",
+          "notes": "Created package.json with all required NPM configuration: name, version, bin entries (qstash-manager and qm alias), dependencies, devDependencies, scripts, engine requirements, and repository info. Verification passed.",
+          "updated_at": "2026-01-13T21:48:40.879327+00:00"
+        },
+        {
+          "id": "subtask-1-2",
+          "description": "Create tsconfig.json with strict TypeScript configuration",
+          "service": "qstash-manager",
+          "files_to_modify": [],
+          "files_to_create": [
+            "tsconfig.json"
+          ],
+          "patterns_from": [
+            "DESIGN.md"
+          ],
+          "verification": {
+            "type": "command",
+            "command": "cd /Users/daniel/development/qstash-manager-project && cat tsconfig.json | grep -q '\"strict\": true' && echo 'OK'",
+            "expected": "OK"
+          },
+          "status": "pending"
+        },
+        {
+          "id": "subtask-1-3",
+          "description": "Create tsup.config.ts with shebang banner for CLI execution",
+          "service": "qstash-manager",
+          "files_to_modify": [],
+          "files_to_create": [
+            "tsup.config.ts"
+          ],
+          "patterns_from": [
+            "DESIGN.md"
+          ],
+          "verification": {
+            "type": "command",
+            "command": "cd /Users/daniel/development/qstash-manager-project && cat tsup.config.ts | grep -q 'shebang' && echo 'OK' || (cat tsup.config.ts | grep -q 'banner' && echo 'OK')",
+            "expected": "OK"
+          },
+          "status": "pending",
+          "notes": "Must include banner: { js: '#!/usr/bin/env node' } for executable CLI"
+        },
+        {
+          "id": "subtask-1-4",
+          "description": "Create vitest.config.ts and supporting config files (.eslintrc.json, .gitignore, .npmignore)",
+          "service": "qstash-manager",
+          "files_to_modify": [],
+          "files_to_create": [
+            "vitest.config.ts",
+            ".eslintrc.json",
+            ".npmignore"
+          ],
+          "patterns_from": [],
+          "verification": {
+            "type": "command",
+            "command": "cd /Users/daniel/development/qstash-manager-project && ls vitest.config.ts .eslintrc.json .npmignore 2>/dev/null | wc -l | tr -d ' '",
+            "expected": "3"
+          },
+          "status": "pending"
+        },
+        {
+          "id": "subtask-1-5",
+          "description": "Create minimal src/index.ts entry point, install dependencies, and verify build works",
+          "service": "qstash-manager",
+          "files_to_modify": [],
+          "files_to_create": [
+            "src/index.ts"
+          ],
+          "patterns_from": [],
+          "verification": {
+            "type": "command",
+            "command": "cd /Users/daniel/development/qstash-manager-project && npm install && npm run build && test -f dist/index.js && echo 'OK'",
+            "expected": "OK"
+          },
+          "status": "pending",
+          "notes": "Run npm install after all config files are created, create minimal index.ts stub"
+        }
+      ]
+    },
+    {
+      "id": "phase-2-core-libs",
+      "name": "Core Libraries",
+      "type": "implementation",
+      "description": "Build foundational libraries: config manager, QStash client wrapper, and UI utilities",
+      "depends_on": [
+        "phase-1-setup"
+      ],
+      "parallel_safe": false,
+      "subtasks": [
+        {
+          "id": "subtask-2-1",
+          "description": "Create TypeScript type definitions for config, commands, and QStash entities",
+          "service": "qstash-manager",
+          "files_to_modify": [],
+          "files_to_create": [
+            "src/types/config.ts",
+            "src/types/commands.ts",
+            "src/types/qstash.ts",
+            "src/types/index.ts"
+          ],
+          "patterns_from": [
+            "/Users/daniel/development/prefix/src/cli/commands/qstash-url-groups.ts"
+          ],
+          "verification": {
+            "type": "command",
+            "command": "cd /Users/daniel/development/qstash-manager-project && npx tsc --noEmit 2>&1 | grep -q 'error' && echo 'FAIL' || echo 'OK'",
+            "expected": "OK"
+          },
+          "status": "pending"
+        },
+        {
+          "id": "subtask-2-2",
+          "description": "Create config manager with multi-environment support and token resolution",
+          "service": "qstash-manager",
+          "files_to_modify": [],
+          "files_to_create": [
+            "src/lib/config/manager.ts",
+            "src/lib/config/types.ts",
+            "src/lib/config/index.ts"
+          ],
+          "patterns_from": [
+            "DESIGN.md"
+          ],
+          "verification": {
+            "type": "command",
+            "command": "cd /Users/daniel/development/qstash-manager-project && npx tsc --noEmit 2>&1 | grep -q 'error' && echo 'FAIL' || echo 'OK'",
+            "expected": "OK"
+          },
+          "status": "pending",
+          "notes": "Token resolution priority: CLI flag > QSTASH_TOKEN env var > config file > prompt"
+        },
+        {
+          "id": "subtask-2-3",
+          "description": "Create QStash client wrapper with error handling",
+          "service": "qstash-manager",
+          "files_to_modify": [],
+          "files_to_create": [
+            "src/lib/qstash/client.ts",
+            "src/lib/qstash/errors.ts",
+            "src/lib/qstash/types.ts",
+            "src/lib/qstash/index.ts"
+          ],
+          "patterns_from": [
+            "/Users/daniel/development/prefix/src/cli/commands/qstash-url-groups.ts"
+          ],
+          "verification": {
+            "type": "command",
+            "command": "cd /Users/daniel/development/qstash-manager-project && npx tsc --noEmit 2>&1 | grep -q 'error' && echo 'FAIL' || echo 'OK'",
+            "expected": "OK"
+          },
+          "status": "pending",
+          "notes": "Error handling must translate 401/404/429 to user-friendly messages"
+        },
+        {
+          "id": "subtask-2-4",
+          "description": "Create UI utilities: prompts wrapper, tables, colors, formatters",
+          "service": "qstash-manager",
+          "files_to_modify": [],
+          "files_to_create": [
+            "src/lib/ui/prompts.ts",
+            "src/lib/ui/tables.ts",
+            "src/lib/ui/colors.ts",
+            "src/lib/ui/formatters.ts",
+            "src/lib/ui/index.ts"
+          ],
+          "patterns_from": [
+            "/Users/daniel/development/prefix/src/cli/commands/qstash-url-groups.ts"
+          ],
+          "verification": {
+            "type": "command",
+            "command": "cd /Users/daniel/development/qstash-manager-project && npx tsc --noEmit 2>&1 | grep -q 'error' && echo 'FAIL' || echo 'OK'",
+            "expected": "OK"
+          },
+          "status": "pending",
+          "notes": "Prompts wrapper must check isCancel() after every prompt to prevent crashes"
+        },
+        {
+          "id": "subtask-2-5",
+          "description": "Create utility functions: URL validation, time formatting",
+          "service": "qstash-manager",
+          "files_to_modify": [],
+          "files_to_create": [
+            "src/lib/utils/validation.ts",
+            "src/lib/utils/time.ts",
+            "src/lib/utils/index.ts"
+          ],
+          "patterns_from": [
+            "/Users/daniel/development/prefix/src/cli/commands/qstash-url-groups.ts"
+          ],
+          "verification": {
+            "type": "command",
+            "command": "cd /Users/daniel/development/qstash-manager-project && npx tsc --noEmit 2>&1 | grep -q 'error' && echo 'FAIL' || echo 'OK'",
+            "expected": "OK"
+          },
+          "status": "pending",
+          "notes": "URL validation MUST require HTTPS and suggest ngrok for local development"
+        }
+      ]
+    },
+    {
+      "id": "phase-3-entry-setup",
+      "name": "CLI Entry Point & Setup Wizard",
+      "type": "implementation",
+      "description": "Create the main CLI entry point with Commander.js and first-run setup wizard",
+      "depends_on": [
+        "phase-2-core-libs"
+      ],
+      "parallel_safe": false,
+      "subtasks": [
+        {
+          "id": "subtask-3-1",
+          "description": "Create main CLI entry point with Commander.js and main menu navigation loop",
+          "service": "qstash-manager",
+          "files_to_modify": [
+            "src/index.ts"
+          ],
+          "files_to_create": [
+            "src/commands/index.ts"
+          ],
+          "patterns_from": [
+            "/Users/daniel/development/prefix/src/cli/commands/qstash-url-groups.ts"
+          ],
+          "verification": {
+            "type": "command",
+            "command": "cd /Users/daniel/development/qstash-manager-project && npm run build && node dist/index.js --version 2>&1 | head -1",
+            "expected": "0.1.0"
+          },
+          "status": "pending",
+          "notes": "Main menu must show environment indicator and all feature sections"
+        },
+        {
+          "id": "subtask-3-2",
+          "description": "Create first-run setup wizard for new users",
+          "service": "qstash-manager",
+          "files_to_modify": [],
+          "files_to_create": [
+            "src/commands/config/setup.ts"
+          ],
+          "patterns_from": [
+            "DESIGN.md"
+          ],
+          "verification": {
+            "type": "command",
+            "command": "cd /Users/daniel/development/qstash-manager-project && npm run build && echo 'OK'",
+            "expected": "OK"
+          },
+          "status": "pending",
+          "notes": "Wizard should guide through environment name and token entry, validate token before saving"
+        },
+        {
+          "id": "subtask-3-3",
+          "description": "Create config management commands (list, add, switch, remove environments)",
+          "service": "qstash-manager",
+          "files_to_modify": [],
+          "files_to_create": [
+            "src/commands/config/index.ts"
+          ],
+          "patterns_from": [
+            "DESIGN.md"
+          ],
+          "verification": {
+            "type": "command",
+            "command": "cd /Users/daniel/development/qstash-manager-project && npm run build && echo 'OK'",
+            "expected": "OK"
+          },
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "id": "phase-4-url-groups",
+      "name": "URL Groups Management",
+      "type": "implementation",
+      "description": "Adapt URL groups management from existing Prefix implementation",
+      "depends_on": [
+        "phase-3-entry-setup"
+      ],
+      "parallel_safe": false,
+      "subtasks": [
+        {
+          "id": "subtask-4-1",
+          "description": "Create URL groups main menu and navigation with explore, quick-update, create, delete options",
+          "service": "qstash-manager",
+          "files_to_modify": [
+            "src/commands/index.ts"
+          ],
+          "files_to_create": [
+            "src/commands/url-groups/index.ts"
+          ],
+          "patterns_from": [
+            "/Users/daniel/development/prefix/src/cli/commands/qstash-url-groups.ts"
+          ],
+          "verification": {
+            "type": "command",
+            "command": "cd /Users/daniel/development/qstash-manager-project && npm run build && echo 'OK'",
+            "expected": "OK"
+          },
+          "status": "pending",
+          "notes": "Follow the exact menu structure and continuous loop pattern from reference"
+        },
+        {
+          "id": "subtask-4-2",
+          "description": "Create URL groups list, explore, and view all endpoints functionality",
+          "service": "qstash-manager",
+          "files_to_modify": [
+            "src/commands/url-groups/index.ts"
+          ],
+          "files_to_create": [
+            "src/commands/url-groups/list.ts"
+          ],
+          "patterns_from": [
+            "/Users/daniel/development/prefix/src/cli/commands/qstash-url-groups.ts"
+          ],
+          "verification": {
+            "type": "command",
+            "command": "cd /Users/daniel/development/qstash-manager-project && npm run build && echo 'OK'",
+            "expected": "OK"
+          },
+          "status": "pending"
+        },
+        {
+          "id": "subtask-4-3",
+          "description": "Create URL group creation with endpoint addition and group name validation",
+          "service": "qstash-manager",
+          "files_to_modify": [
+            "src/commands/url-groups/index.ts"
+          ],
+          "files_to_create": [
+            "src/commands/url-groups/create.ts"
+          ],
+          "patterns_from": [
+            "/Users/daniel/development/prefix/src/cli/commands/qstash-url-groups.ts"
+          ],
+          "verification": {
+            "type": "command",
+            "command": "cd /Users/daniel/development/qstash-manager-project && npm run build && echo 'OK'",
+            "expected": "OK"
+          },
+          "status": "pending",
+          "notes": "Include group name validation (alphanumeric, hyphens, underscores only)"
+        },
+        {
+          "id": "subtask-4-4",
+          "description": "Create URL group management (add/remove endpoints, delete group with confirmations)",
+          "service": "qstash-manager",
+          "files_to_modify": [
+            "src/commands/url-groups/index.ts"
+          ],
+          "files_to_create": [
+            "src/commands/url-groups/manage.ts"
+          ],
+          "patterns_from": [
+            "/Users/daniel/development/prefix/src/cli/commands/qstash-url-groups.ts"
+          ],
+          "verification": {
+            "type": "command",
+            "command": "cd /Users/daniel/development/qstash-manager-project && npm run build && echo 'OK'",
+            "expected": "OK"
+          },
+          "status": "pending",
+          "notes": "Warn if removing last endpoint from group, require confirmation for delete"
+        },
+        {
+          "id": "subtask-4-5",
+          "description": "Create Quick Update feature for fast ngrok workflow",
+          "service": "qstash-manager",
+          "files_to_modify": [
+            "src/commands/url-groups/index.ts"
+          ],
+          "files_to_create": [
+            "src/commands/url-groups/quick-update.ts"
+          ],
+          "patterns_from": [
+            "/Users/daniel/development/prefix/src/cli/commands/qstash-url-groups.ts"
+          ],
+          "verification": {
+            "type": "command",
+            "command": "cd /Users/daniel/development/qstash-manager-project && npm run build && echo 'OK'",
+            "expected": "OK"
+          },
+          "status": "pending",
+          "notes": "This is the key developer workflow feature - must be fast and intuitive"
+        }
+      ]
+    },
+    {
+      "id": "phase-5-messages",
+      "name": "Messages Management",
+      "type": "implementation",
+      "description": "Build message sending, tracking, and cancellation features",
+      "depends_on": [
+        "phase-4-url-groups"
+      ],
+      "parallel_safe": false,
+      "subtasks": [
+        {
+          "id": "subtask-5-1",
+          "description": "Create messages main menu and send message functionality with destination options",
+          "service": "qstash-manager",
+          "files_to_modify": [
+            "src/commands/index.ts"
+          ],
+          "files_to_create": [
+            "src/commands/messages/index.ts",
+            "src/commands/messages/send.ts"
+          ],
+          "patterns_from": [
+            "DESIGN.md"
+          ],
+          "verification": {
+            "type": "command",
+            "command": "cd /Users/daniel/development/qstash-manager-project && npm run build && echo 'OK'",
+            "expected": "OK"
+          },
+          "status": "pending",
+          "notes": "Support sending to URL, URL group, or queue with delay/headers options"
+        },
+        {
+          "id": "subtask-5-2",
+          "description": "Create message tracking and cancellation functionality",
+          "service": "qstash-manager",
+          "files_to_modify": [
+            "src/commands/messages/index.ts"
+          ],
+          "files_to_create": [
+            "src/commands/messages/track.ts",
+            "src/commands/messages/cancel.ts"
+          ],
+          "patterns_from": [
+            "DESIGN.md"
+          ],
+          "verification": {
+            "type": "command",
+            "command": "cd /Users/daniel/development/qstash-manager-project && npm run build && echo 'OK'",
+            "expected": "OK"
+          },
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "id": "phase-6-logs",
+      "name": "Logs Viewing",
+      "type": "implementation",
+      "description": "Build basic logs viewing functionality with filtering",
+      "depends_on": [
+        "phase-5-messages"
+      ],
+      "parallel_safe": false,
+      "subtasks": [
+        {
+          "id": "subtask-6-1",
+          "description": "Create logs viewing with time range filtering (1h, 4h, 24h) and status filtering",
+          "service": "qstash-manager",
+          "files_to_modify": [
+            "src/commands/index.ts"
+          ],
+          "files_to_create": [
+            "src/commands/logs/index.ts"
+          ],
+          "patterns_from": [
+            "DESIGN.md"
+          ],
+          "verification": {
+            "type": "command",
+            "command": "cd /Users/daniel/development/qstash-manager-project && npm run build && echo 'OK'",
+            "expected": "OK"
+          },
+          "status": "pending",
+          "notes": "Display in table format with status, destination, timestamp"
+        }
+      ]
+    },
+    {
+      "id": "phase-7-queues",
+      "name": "Queues Management",
+      "type": "implementation",
+      "description": "Build queue management features (CRUD, pause/resume, parallelism)",
+      "depends_on": [
+        "phase-6-logs"
+      ],
+      "parallel_safe": false,
+      "subtasks": [
+        {
+          "id": "subtask-7-1",
+          "description": "Create queues main menu with list, create, manage, delete options and parallelism config",
+          "service": "qstash-manager",
+          "files_to_modify": [
+            "src/commands/index.ts"
+          ],
+          "files_to_create": [
+            "src/commands/queues/index.ts"
+          ],
+          "patterns_from": [
+            "DESIGN.md",
+            "/Users/daniel/development/prefix/src/cli/commands/qstash-url-groups.ts"
+          ],
+          "verification": {
+            "type": "command",
+            "command": "cd /Users/daniel/development/qstash-manager-project && npm run build && echo 'OK'",
+            "expected": "OK"
+          },
+          "status": "pending",
+          "notes": "Include parallelism configuration (1-100), pause/resume, delete with confirmation"
+        }
+      ]
+    },
+    {
+      "id": "phase-8-schedules",
+      "name": "Schedules Management",
+      "type": "implementation",
+      "description": "Build schedule management features with cron expression support",
+      "depends_on": [
+        "phase-7-queues"
+      ],
+      "parallel_safe": false,
+      "subtasks": [
+        {
+          "id": "subtask-8-1",
+          "description": "Create schedules main menu with list, create (cron presets), manage, delete options",
+          "service": "qstash-manager",
+          "files_to_modify": [
+            "src/commands/index.ts"
+          ],
+          "files_to_create": [
+            "src/commands/schedules/index.ts"
+          ],
+          "patterns_from": [
+            "DESIGN.md",
+            "/Users/daniel/development/prefix/src/cli/commands/qstash-url-groups.ts"
+          ],
+          "verification": {
+            "type": "command",
+            "command": "cd /Users/daniel/development/qstash-manager-project && npm run build && echo 'OK'",
+            "expected": "OK"
+          },
+          "status": "pending",
+          "notes": "Include cron presets (hourly, daily, weekly) and preview next 5 scheduled runs"
+        }
+      ]
+    },
+    {
+      "id": "phase-9-dlq",
+      "name": "Dead Letter Queue Management",
+      "type": "implementation",
+      "description": "Build DLQ viewing, retry, and cleanup features",
+      "depends_on": [
+        "phase-8-schedules"
+      ],
+      "parallel_safe": false,
+      "subtasks": [
+        {
+          "id": "subtask-9-1",
+          "description": "Create DLQ menu with list failed messages, view details, retry, and bulk delete options",
+          "service": "qstash-manager",
+          "files_to_modify": [
+            "src/commands/index.ts"
+          ],
+          "files_to_create": [
+            "src/commands/dlq/index.ts"
+          ],
+          "patterns_from": [
+            "DESIGN.md",
+            "/Users/daniel/development/prefix/src/cli/commands/qstash-url-groups.ts"
+          ],
+          "verification": {
+            "type": "command",
+            "command": "cd /Users/daniel/development/qstash-manager-project && npm run build && echo 'OK'",
+            "expected": "OK"
+          },
+          "status": "pending",
+          "notes": "Show failure details and error messages, support bulk retry/delete"
+        }
+      ]
+    },
+    {
+      "id": "phase-10-security",
+      "name": "Security & Signing Keys",
+      "type": "implementation",
+      "description": "Build signing keys viewing and rotation features",
+      "depends_on": [
+        "phase-9-dlq"
+      ],
+      "parallel_safe": false,
+      "subtasks": [
+        {
+          "id": "subtask-10-1",
+          "description": "Create security menu with view current/next signing keys and rotate with confirmation",
+          "service": "qstash-manager",
+          "files_to_modify": [
+            "src/commands/index.ts"
+          ],
+          "files_to_create": [
+            "src/commands/security/index.ts"
+          ],
+          "patterns_from": [
+            "DESIGN.md"
+          ],
+          "verification": {
+            "type": "command",
+            "command": "cd /Users/daniel/development/qstash-manager-project && npm run build && echo 'OK'",
+            "expected": "OK"
+          },
+          "status": "pending",
+          "notes": "Rotation requires confirmation, show current and next keys"
+        }
+      ]
+    },
+    {
+      "id": "phase-11-testing",
+      "name": "Testing Suite",
+      "type": "implementation",
+      "description": "Build comprehensive test suite with unit, integration, and E2E tests",
+      "depends_on": [
+        "phase-10-security"
+      ],
+      "parallel_safe": false,
+      "subtasks": [
+        {
+          "id": "subtask-11-1",
+          "description": "Create unit tests for config manager, client wrapper, and validation utilities",
+          "service": "qstash-manager",
+          "files_to_modify": [],
+          "files_to_create": [
+            "tests/unit/config.test.ts",
+            "tests/unit/client.test.ts",
+            "tests/unit/validation.test.ts"
+          ],
+          "patterns_from": [
+            "DESIGN.md"
+          ],
+          "verification": {
+            "type": "command",
+            "command": "cd /Users/daniel/development/qstash-manager-project && npm run test:unit 2>&1 | grep -q 'FAIL' && echo 'FAIL' || echo 'PASS'",
+            "expected": "PASS"
+          },
+          "status": "pending"
+        },
+        {
+          "id": "subtask-11-2",
+          "description": "Create integration tests for QStash API operations (URL groups, messages)",
+          "service": "qstash-manager",
+          "files_to_modify": [],
+          "files_to_create": [
+            "tests/integration/url-groups.test.ts",
+            "tests/integration/messages.test.ts"
+          ],
+          "patterns_from": [
+            "DESIGN.md"
+          ],
+          "verification": {
+            "type": "command",
+            "command": "cd /Users/daniel/development/qstash-manager-project && npm run test:integration 2>&1 | grep -q 'FAIL' && echo 'FAIL' || echo 'PASS'",
+            "expected": "PASS"
+          },
+          "status": "pending",
+          "notes": "Requires QSTASH_TEST_TOKEN env var"
+        },
+        {
+          "id": "subtask-11-3",
+          "description": "Create E2E tests for CLI workflows (first-run, url-groups)",
+          "service": "qstash-manager",
+          "files_to_modify": [],
+          "files_to_create": [
+            "tests/e2e/first-run.test.ts",
+            "tests/e2e/url-groups.test.ts"
+          ],
+          "patterns_from": [
+            "DESIGN.md"
+          ],
+          "verification": {
+            "type": "command",
+            "command": "cd /Users/daniel/development/qstash-manager-project && npm run test:e2e 2>&1 | grep -q 'FAIL' && echo 'FAIL' || echo 'PASS'",
+            "expected": "PASS"
+          },
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "id": "phase-12-publishing",
+      "name": "NPM Publishing Setup",
+      "type": "integration",
+      "description": "Final polish and NPM publishing configuration",
+      "depends_on": [
+        "phase-11-testing"
+      ],
+      "parallel_safe": false,
+      "subtasks": [
+        {
+          "id": "subtask-12-1",
+          "description": "Update README with installation, usage examples, and feature documentation",
+          "service": "qstash-manager",
+          "files_to_modify": [
+            "README.md"
+          ],
+          "files_to_create": [],
+          "patterns_from": [
+            "DESIGN.md"
+          ],
+          "verification": {
+            "type": "command",
+            "command": "cd /Users/daniel/development/qstash-manager-project && cat README.md | grep -q 'npx qstash-manager' && echo 'OK'",
+            "expected": "OK"
+          },
+          "status": "pending"
+        },
+        {
+          "id": "subtask-12-2",
+          "description": "Verify npm link works for local testing and CLI executes correctly",
+          "service": "qstash-manager",
+          "files_to_modify": [],
+          "files_to_create": [],
+          "patterns_from": [],
+          "verification": {
+            "type": "command",
+            "command": "cd /Users/daniel/development/qstash-manager-project && npm run build && npm link && qstash-manager --version 2>&1 | head -1",
+            "expected": "0.1.0"
+          },
+          "status": "pending"
+        },
+        {
+          "id": "subtask-12-3",
+          "description": "Final verification: all tests pass, typecheck passes, build succeeds",
+          "service": "qstash-manager",
+          "files_to_modify": [],
+          "files_to_create": [],
+          "patterns_from": [],
+          "verification": {
+            "type": "command",
+            "command": "cd /Users/daniel/development/qstash-manager-project && npm run typecheck && npm run build && npm test 2>&1 | grep -q 'FAIL' && echo 'FAIL' || echo 'PASS'",
+            "expected": "PASS"
+          },
+          "status": "pending"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "total_phases": 12,
+    "total_subtasks": 26,
+    "services_involved": [
+      "qstash-manager"
+    ],
+    "estimated_files": 45,
+    "parallelism": {
+      "max_parallel_phases": 1,
+      "parallel_groups": [],
+      "recommended_workers": 1,
+      "speedup_estimate": "N/A - single service, sequential dependencies"
+    },
+    "implementation_priority": {
+      "phase_1_week_1": [
+        "phase-1-setup",
+        "phase-2-core-libs",
+        "phase-3-entry-setup"
+      ],
+      "phase_1_week_2": [
+        "phase-4-url-groups",
+        "phase-5-messages",
+        "phase-6-logs"
+      ],
+      "phase_2_week_3_4": [
+        "phase-7-queues",
+        "phase-8-schedules",
+        "phase-9-dlq"
+      ],
+      "phase_2_week_5": [
+        "phase-10-security",
+        "phase-11-testing",
+        "phase-12-publishing"
+      ]
+    },
+    "startup_command": "cd /Users/daniel/development/qstash-manager-project && npm run dev"
+  },
+  "verification_strategy": {
+    "risk_level": "medium",
+    "skip_validation": false,
+    "test_creation_phase": "phase-11-testing",
+    "test_types_required": [
+      "unit",
+      "integration"
+    ],
+    "security_scanning_required": true,
+    "staging_deployment_required": false,
+    "acceptance_criteria": [
+      "All TypeScript compiles without errors",
+      "Build succeeds and produces executable CLI",
+      "npm link allows local testing",
+      "Unit tests pass with >70% coverage",
+      "Integration tests pass with real QStash API",
+      "No credentials logged or committed",
+      "Package size <5MB",
+      "Startup time <1 second"
+    ],
+    "verification_steps": [
+      {
+        "name": "TypeScript Compilation",
+        "command": "npm run typecheck",
+        "expected_outcome": "No errors",
+        "type": "build",
+        "required": true,
+        "blocking": true
+      },
+      {
+        "name": "Build",
+        "command": "npm run build",
+        "expected_outcome": "dist/index.js created with shebang",
+        "type": "build",
+        "required": true,
+        "blocking": true
+      },
+      {
+        "name": "Unit Tests",
+        "command": "npm run test:unit",
+        "expected_outcome": "All tests pass",
+        "type": "test",
+        "required": true,
+        "blocking": true
+      },
+      {
+        "name": "Integration Tests",
+        "command": "npm run test:integration",
+        "expected_outcome": "All tests pass (requires QSTASH_TEST_TOKEN)",
+        "type": "test",
+        "required": true,
+        "blocking": false
+      },
+      {
+        "name": "Local CLI Test",
+        "command": "npm link && qstash-manager --version",
+        "expected_outcome": "Version number displayed",
+        "type": "e2e",
+        "required": true,
+        "blocking": true
+      }
+    ],
+    "reasoning": "Medium risk due to token management and UX quality requirements. Security scan needed to ensure no credentials are logged or committed."
+  },
+  "qa_acceptance": {
+    "unit_tests": {
+      "required": true,
+      "commands": [
+        "npm run test:unit"
+      ],
+      "minimum_coverage": 70
+    },
+    "integration_tests": {
+      "required": true,
+      "commands": [
+        "npm run test:integration"
+      ],
+      "services_to_test": [
+        "qstash-manager"
+      ]
+    },
+    "e2e_tests": {
+      "required": true,
+      "commands": [
+        "npm run test:e2e"
+      ],
+      "flows": [
+        "first-run-setup",
+        "url-group-crud",
+        "quick-update"
+      ]
+    },
+    "cli_verification": {
+      "required": true,
+      "checks": [
+        {
+          "command": "npx . --version",
+          "expected": "Version displayed"
+        },
+        {
+          "command": "npx . --help",
+          "expected": "Help output displayed"
+        },
+        {
+          "command": "npm link && qstash-manager",
+          "expected": "CLI starts correctly"
+        }
+      ]
+    },
+    "manual_testing_checklist": [
+      "First-run setup wizard completes successfully",
+      "Ctrl+C goes back one level (never crashes)",
+      "ESC returns to previous menu",
+      "All menus show back/exit options",
+      "Environment indicator visible in all screens",
+      "Error messages are actionable",
+      "Quick update flow completes in <30 seconds"
+    ]
+  },
+  "qa_signoff": null,
+  "planStatus": "in_progress",
+  "last_updated": "2026-01-13T21:48:40.879333+00:00"
+}
