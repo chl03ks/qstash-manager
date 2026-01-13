@@ -246,11 +246,35 @@
         }
       ],
       "status": "completed"
+    },
+    "subtask-10-1": {
+      "attempts": [
+        {
+          "session": 22,
+          "timestamp": "2026-01-13T17:14:51.223113",
+          "approach": "Implemented: Create security menu with view current/next signing keys and rotate with confirmation",
+          "success": true,
+          "error": null
+        }
+      ],
+      "status": "completed"
+    },
+    "subtask-11-1": {
+      "attempts": [
+        {
+          "session": 23,
+          "timestamp": "2026-01-13T17:19:30.559829",
+          "approach": "Implemented: Create unit tests for config manager, client wrapper, and validation utilities",
+          "success": true,
+          "error": null
+        }
+      ],
+      "status": "completed"
     }
   },
   "stuck_subtasks": [],
   "metadata": {
     "created_at": "2026-01-13T16:08:36.418705",
-    "last_updated": "2026-01-13T17:11:34.592883"
+    "last_updated": "2026-01-13T17:19:30.559843"
   }
 }

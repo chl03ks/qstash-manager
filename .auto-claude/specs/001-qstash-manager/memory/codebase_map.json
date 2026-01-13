@@ -84,7 +84,12 @@
       "description": "DLQ management menu with runDlqMenu() function. Supports: listing failed messages with error details, viewing detailed message info (response body, headers), retrying single/bulk messages (republish + delete from DLQ), deleting single/bulk messages with confirmations. Uses QStashClientWrapper methods: listDlqMessages, getDlqMessage, deleteDlqMessage, deleteDlqMessages, publishMessage. Follows same navigation pattern as queues/schedules menus with UserCancelledError handling.",
       "category": "command_module",
       "discovered_at": "2026-01-13T23:11:24.782712+00:00"
+    },
+    "src/commands/security/index.ts": {
+      "description": "Security menu for signing keys management with runSecurityMenu() function. Features: view keys (masked preview + full display), rotate keys with confirmation. Uses getSigningKeys() from QStashClientWrapper. Key rotation uses direct HTTP call via client.getClient().http.request() since SDK doesn't expose rotation method. Follows DLQ menu pattern with UserCancelledError handling and error state menu.",
+      "category": "commands",
+      "discovered_at": "2026-01-13T23:14:43.401396+00:00"
     }
   },
-  "last_updated": "2026-01-13T23:11:24.782718+00:00"
+  "last_updated": "2026-01-13T23:14:43.401403+00:00"
 }
