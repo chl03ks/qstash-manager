@@ -15,6 +15,7 @@ import {
   select,
   UserCancelledError,
 } from '../lib/ui/index.js';
+import { runConfigMenu } from './config/index.js';
 import { runSetupWizard, shouldRunSetupWizard } from './config/setup.js';
 
 /**
@@ -173,8 +174,7 @@ export class MainMenu {
         break;
 
       case 'config':
-        // TODO: Implement config menu (subtask-3-3)
-        note('Configuration management coming soon!', 'Not Implemented');
+        await runConfigMenu();
         break;
 
       case 'exit':
