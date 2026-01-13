@@ -17,6 +17,7 @@ import {
 } from '../lib/ui/index.js';
 import { runConfigMenu } from './config/index.js';
 import { runSetupWizard, shouldRunSetupWizard } from './config/setup.js';
+import { runLogsMenu } from './logs/index.js';
 import { runMessagesMenu } from './messages/index.js';
 import { runUrlGroupsMenu } from './url-groups/index.js';
 
@@ -164,8 +165,7 @@ export class MainMenu {
         break;
 
       case 'logs':
-        // TODO: Implement logs menu (subtask-6-1)
-        note('Logs viewing coming soon!', 'Not Implemented');
+        await runLogsMenu();
         break;
 
       case 'security':
