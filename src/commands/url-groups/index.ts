@@ -25,6 +25,7 @@ import {
 import { createUrlGroup } from './create.js';
 import { exploreGroups, viewAllEndpoints } from './list.js';
 import { deleteUrlGroup } from './manage.js';
+import { quickUpdateEndpoint } from './quick-update.js';
 
 /**
  * Result of running the URL groups menu
@@ -85,8 +86,7 @@ export async function runUrlGroupsMenu(): Promise<UrlGroupsMenuResult> {
           break;
 
         case 'quick-update':
-          // TODO: Implement quick update (subtask-4-3)
-          note('Quick endpoint update coming soon!', 'Not Implemented');
+          await quickUpdateEndpoint(client);
           break;
 
         case 'view-all-endpoints':
