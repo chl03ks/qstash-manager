@@ -25,13 +25,14 @@ describe('ConfigManager', () => {
     testDir = join(tmpdir(), `qstash-manager-test-${Date.now()}-${Math.random().toString(36).slice(2)}`);
     mkdirSync(testDir, { recursive: true });
 
-    configManager = new ConfigManager({
+    // Reset the singleton for each test
+    resetConfigManager();
+
+    // Initialize singleton with test config so getConfigManager() returns test instance
+    configManager = getConfigManager({
       configDir: testDir,
       configPath: join(testDir, 'config.json'),
     });
-
-    // Reset the singleton for each test
-    resetConfigManager();
   });
 
   afterEach(() => {

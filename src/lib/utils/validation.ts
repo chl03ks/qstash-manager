@@ -37,8 +37,16 @@ export function validateUrl(url: string): ValidationResult {
       };
     }
 
-    // Basic hostname validation
-    if (!parsedUrl.hostname || parsedUrl.hostname.length < 1) {
+    // Basic hostname validation - must have a non-empty hostname
+    if (!parsedUrl.hostname || parsedUrl.hostname.trim().length === 0) {
+      return { isValid: false, error: 'Invalid hostname in URL' };
+    }
+
+    // Hostname should be a valid format (has dots or is localhost or is IP)
+    // Reject single-word hostnames like 'path' from malformed URLs like 'https:///path'
+    const hostname = parsedUrl.hostname;
+    const isLocalhostOrIP = hostname === 'localhost' || /^[\d.]+$/.test(hostname) || /^[\da-f:]+$/i.test(hostname);
+    if (!isLocalhostOrIP && !hostname.includes('.')) {
       return { isValid: false, error: 'Invalid hostname in URL' };
     }
 
@@ -178,14 +186,14 @@ export function validateToken(token: string): ValidationResult {
     return { isValid: false, error: 'Token cannot be empty' };
   }
 
+  // Check for obviously invalid characters (before length check to give better error message)
+  if (/[\s]/.test(trimmedToken)) {
+    return { isValid: false, error: 'Token cannot contain whitespace' };
+  }
+
   // QStash tokens are typically base64-encoded and fairly long
   if (trimmedToken.length < 20) {
     return { isValid: false, error: 'Token appears too short to be valid' };
-  }
-
-  // Check for obviously invalid characters
-  if (/[\s]/.test(trimmedToken)) {
-    return { isValid: false, error: 'Token cannot contain whitespace' };
   }
 
   return { isValid: true };

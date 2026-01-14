@@ -17,7 +17,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { ConfigManager, resetConfigManager } from '../../src/lib/config/manager.js';
+import { ConfigManager, getConfigManager, resetConfigManager } from '../../src/lib/config/manager.js';
 import { validateGroupName, validateEndpointUrl } from '../../src/commands/url-groups/create.js';
 
 // Mock @clack/prompts
@@ -62,13 +62,14 @@ describe('URL Groups E2E Tests', () => {
     testDir = join(tmpdir(), `qstash-manager-url-groups-e2e-${Date.now()}-${Math.random().toString(36).slice(2)}`);
     mkdirSync(testDir, { recursive: true });
 
-    configManager = new ConfigManager({
+    // Reset the singleton for each test
+    resetConfigManager();
+
+    // Initialize singleton with test config so getConfigManager() returns test instance
+    configManager = getConfigManager({
       configDir: testDir,
       configPath: join(testDir, 'config.json'),
     });
-
-    // Reset the singleton for each test
-    resetConfigManager();
 
     // Set up default config with token for tests
     configManager.addEnvironment('production', 'test-qstash-token', 'Production');

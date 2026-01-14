@@ -85,7 +85,11 @@ export class ConfigManager {
     }
 
     if (!this.configExists()) {
-      return { ...DEFAULT_CONFIG };
+      return {
+        ...DEFAULT_CONFIG,
+        environments: { ...DEFAULT_CONFIG.environments },
+        preferences: { ...DEFAULT_PREFERENCES },
+      };
     }
 
     try {
@@ -96,7 +100,7 @@ export class ConfigManager {
       const normalizedConfig: Config = {
         version: config.version ?? DEFAULT_CONFIG.version,
         defaultEnvironment: config.defaultEnvironment ?? DEFAULT_CONFIG.defaultEnvironment,
-        environments: config.environments ?? DEFAULT_CONFIG.environments,
+        environments: config.environments ?? { ...DEFAULT_CONFIG.environments },
         preferences: {
           ...DEFAULT_PREFERENCES,
           ...config.preferences,
@@ -107,7 +111,11 @@ export class ConfigManager {
       return normalizedConfig;
     } catch {
       // If file is corrupted, return default config
-      return { ...DEFAULT_CONFIG };
+      return {
+        ...DEFAULT_CONFIG,
+        environments: { ...DEFAULT_CONFIG.environments },
+        preferences: { ...DEFAULT_PREFERENCES },
+      };
     }
   }
 
