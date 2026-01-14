@@ -1,0 +1,53 @@
+
+> qstash-manager@0.1.0 typecheck
+> tsc --noEmit
+
+src/commands/dlq/index.ts(691,5): error TS2322: Type '"config" | "cli" | "env" | "prompt"' is not assignable to type 'TokenSource'.
+  Type '"prompt"' is not assignable to type 'TokenSource'.
+src/commands/logs/index.ts(187,13): error TS2554: Expected 2 arguments, but got 0.
+src/commands/logs/index.ts(188,5): error TS2339: Property 'start' does not exist on type 'Promise<unknown>'.
+src/commands/logs/index.ts(192,5): error TS2339: Property 'stop' does not exist on type 'Promise<unknown>'.
+src/commands/logs/index.ts(386,5): error TS2322: Type '"config" | "cli" | "env" | "prompt"' is not assignable to type 'TokenSource'.
+  Type '"prompt"' is not assignable to type 'TokenSource'.
+src/commands/messages/index.ts(147,5): error TS2322: Type '"config" | "cli" | "env" | "prompt"' is not assignable to type 'TokenSource'.
+  Type '"prompt"' is not assignable to type 'TokenSource'.
+src/commands/queues/index.ts(258,5): error TS2322: Type '"config" | "cli" | "env" | "prompt"' is not assignable to type 'TokenSource'.
+  Type '"prompt"' is not assignable to type 'TokenSource'.
+src/commands/schedules/index.ts(273,5): error TS2322: Type '"config" | "cli" | "env" | "prompt"' is not assignable to type 'TokenSource'.
+  Type '"prompt"' is not assignable to type 'TokenSource'.
+src/commands/security/index.ts(246,7): error TS2578: Unused '@ts-expect-error' directive.
+src/commands/security/index.ts(324,5): error TS2322: Type '"config" | "cli" | "env" | "prompt"' is not assignable to type 'TokenSource'.
+  Type '"prompt"' is not assignable to type 'TokenSource'.
+src/commands/url-groups/index.ts(227,5): error TS2322: Type '"config" | "cli" | "env" | "prompt"' is not assignable to type 'TokenSource'.
+  Type '"prompt"' is not assignable to type 'TokenSource'.
+src/lib/qstash/client.ts(267,11): error TS2322: Type 'string | undefined' is not assignable to type 'HTTPMethods | undefined'.
+  Type 'string' is not assignable to type 'HTTPMethods | undefined'.
+src/lib/qstash/client.ts(330,48): error TS2339: Property 'list' does not exist on type '(request?: QueueRequest | undefined) => Queue'.
+src/lib/qstash/client.ts(331,28): error TS7006: Parameter 'q' implicitly has an 'any' type.
+src/lib/qstash/client.ts(350,43): error TS2339: Property 'get' does not exist on type '(request?: QueueRequest | undefined) => Queue'.
+src/lib/qstash/client.ts(373,33): error TS2339: Property 'upsert' does not exist on type '(request?: QueueRequest | undefined) => Queue'.
+src/lib/qstash/client.ts(388,33): error TS2339: Property 'pause' does not exist on type '(request?: QueueRequest | undefined) => Queue'.
+src/lib/qstash/client.ts(401,33): error TS2339: Property 'resume' does not exist on type '(request?: QueueRequest | undefined) => Queue'.
+src/lib/qstash/client.ts(414,33): error TS2339: Property 'delete' does not exist on type '(request?: QueueRequest | undefined) => Queue'.
+src/lib/qstash/client.ts(435,11): error TS2322: Type 'string | undefined' is not assignable to type 'HTTPMethods | undefined'.
+  Type 'string' is not assignable to type 'HTTPMethods | undefined'.
+src/lib/qstash/client.ts(458,23): error TS2339: Property 'url' does not exist on type 'PublishToApiResponse | PublishToUrlResponse'.
+  Property 'url' does not exist on type 'PublishToApiResponse'.
+src/lib/qstash/client.ts(459,32): error TS2339: Property 'deduplicated' does not exist on type 'PublishToApiResponse | PublishToUrlResponse'.
+  Property 'deduplicated' does not exist on type 'PublishToApiResponse'.
+src/lib/qstash/client.ts(477,11): error TS2322: Type 'string | undefined' is not assignable to type 'HTTPMethods | undefined'.
+  Type 'string' is not assignable to type 'HTTPMethods | undefined'.
+src/lib/qstash/client.ts(500,23): error TS2339: Property 'url' does not exist on type 'PublishToApiResponse | PublishToUrlResponse'.
+  Property 'url' does not exist on type 'PublishToApiResponse'.
+src/lib/qstash/client.ts(501,32): error TS2339: Property 'deduplicated' does not exist on type 'PublishToApiResponse | PublishToUrlResponse'.
+  Property 'deduplicated' does not exist on type 'PublishToApiResponse'.
+src/lib/qstash/client.ts(531,28): error TS2339: Property 'queueName' does not exist on type 'Log'.
+src/lib/qstash/client.ts(532,29): error TS2339: Property 'scheduleId' does not exist on type 'Log'.
+src/lib/qstash/client.ts(600,41): error TS2339: Property 'get' does not exist on type 'DLQ'.
+src/lib/qstash/client.ts(663,13): error TS2322: Type 'MessageState | undefined' is not assignable to type 'State | undefined'.
+  Type '"CANCELLED"' is not assignable to type 'State | undefined'. Did you mean '"CANCELED"'?
+src/lib/qstash/client.ts(678,31): error TS2339: Property 'responseStatus' does not exist on type 'Log'.
+src/lib/qstash/client.ts(679,29): error TS2339: Property 'responseBody' does not exist on type 'Log'.
+src/lib/qstash/client.ts(680,26): error TS2339: Property 'queueName' does not exist on type 'Log'.
+src/lib/qstash/client.ts(682,27): error TS2339: Property 'scheduleId' does not exist on type 'Log'.
+src/lib/qstash/client.ts(701,40): error TS2339: Property 'keys' does not exist on type 'Client'.
