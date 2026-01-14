@@ -1,3 +1,13 @@
+## [0.2.0](https://github.com/chl03ks/qstash-manager/compare/v0.1.0...v0.2.0) (2026-01-14)
+
+### Features
+
+* add automated release management with semantic-release ([37d51ed](https://github.com/chl03ks/qstash-manager/commit/37d51ed9df7741921ac0a4f5b7a1825a46cace4c))
+
+### Bug Fixes
+
+* resolve undefined toString error when fetching logs ([708f486](https://github.com/chl03ks/qstash-manager/commit/708f4867de8d52027627b680278b6363f6918d4f))
+
 # Changelog
 
 All notable changes to this project will be documented in this file.

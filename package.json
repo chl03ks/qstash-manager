@@ -1,6 +1,6 @@
 {
   "name": "qstash-manager",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Interactive CLI for managing QStash - URL groups, schedules, queues, messages, and monitoring",
   "keywords": [
     "qstash",
