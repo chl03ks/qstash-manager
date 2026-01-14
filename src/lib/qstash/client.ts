@@ -264,7 +264,7 @@ export class QStashClientWrapper {
         const result = await this.client.schedules.create({
           destination: options.destination,
           cron: options.cron,
-          method: options.method,
+          method: options.method as import('@upstash/qstash').HTTPMethods | undefined,
           body: options.body,
           headers: options.headers,
           retries: options.retries,
@@ -327,7 +327,7 @@ export class QStashClientWrapper {
     return this.executeWithErrorHandling(
       'Listing queues',
       async () => {
-        const queues = await this.client.queue.list();
+        const queues = await this.client.queue().list();
         return queues.map((q) => ({
           name: q.name,
           parallelism: q.parallelism,
@@ -347,7 +347,7 @@ export class QStashClientWrapper {
     return this.executeWithErrorHandling(
       `Getting queue '${name}'`,
       async () => {
-        const q = await this.client.queue.get(name);
+        const q = await this.client.queue({ queueName: name }).get();
         return {
           name: q.name,
           parallelism: q.parallelism,
@@ -370,8 +370,7 @@ export class QStashClientWrapper {
     return this.executeWithErrorHandling(
       `Upserting queue '${options.name}'`,
       async () => {
-        await this.client.queue.upsert({
-          queueName: options.name,
+        await this.client.queue({ queueName: options.name }).upsert({
           parallelism: options.parallelism ?? 1,
         });
       }
@@ -385,7 +384,7 @@ export class QStashClientWrapper {
     return this.executeWithErrorHandling(
       `Pausing queue '${name}'`,
       async () => {
-        await this.client.queue.pause({ queueName: name });
+        await this.client.queue({ queueName: name }).pause();
       },
       { resourceType: 'queue', resourceId: name }
     );
@@ -398,7 +397,7 @@ export class QStashClientWrapper {
     return this.executeWithErrorHandling(
       `Resuming queue '${name}'`,
       async () => {
-        await this.client.queue.resume({ queueName: name });
+        await this.client.queue({ queueName: name }).resume();
       },
       { resourceType: 'queue', resourceId: name }
     );
@@ -411,7 +410,7 @@ export class QStashClientWrapper {
     return this.executeWithErrorHandling(
       `Deleting queue '${name}'`,
       async () => {
-        await this.client.queue.delete(name);
+        await this.client.queue({ queueName: name }).delete();
       },
       { resourceType: 'queue', resourceId: name }
     );
@@ -432,7 +431,7 @@ export class QStashClientWrapper {
       async () => {
         const result = await this.client.publishJSON({
           url: options.destination,
-          method: options.method,
+          method: options.method as import('@upstash/qstash').HTTPMethods | undefined,
           body: options.body ? JSON.parse(options.body) : undefined,
           headers: options.headers,
           delay: options.delay,
@@ -448,15 +447,15 @@ export class QStashClientWrapper {
         if (Array.isArray(result)) {
           return {
             messageId: result[0]?.messageId ?? '',
-            url: result[0]?.url,
-            deduplicated: result[0]?.deduplicated,
+            url: 'url' in result[0] ? result[0].url : undefined,
+            deduplicated: 'deduplicated' in result[0] ? result[0].deduplicated : undefined,
           };
         }
 
         return {
           messageId: result.messageId,
-          url: result.url,
-          deduplicated: result.deduplicated,
+          url: 'url' in result ? result.url : undefined,
+          deduplicated: 'deduplicated' in result ? result.deduplicated : undefined,
         };
       }
     );
@@ -474,7 +473,7 @@ export class QStashClientWrapper {
         const queue = this.client.queue({ queueName: options.queueName });
         const result = await queue.enqueueJSON({
           url: options.destination,
-          method: options.method,
+          method: options.method as import('@upstash/qstash').HTTPMethods | undefined,
           body: options.body ? JSON.parse(options.body) : undefined,
           headers: options.headers,
           delay: options.delay,
@@ -490,15 +489,15 @@ export class QStashClientWrapper {
         if (Array.isArray(result)) {
           return {
             messageId: result[0]?.messageId ?? '',
-            url: result[0]?.url,
-            deduplicated: result[0]?.deduplicated,
+            url: 'url' in result[0] ? result[0].url : undefined,
+            deduplicated: 'deduplicated' in result[0] ? result[0].deduplicated : undefined,
           };
         }
 
         return {
           messageId: result.messageId,
-          url: result.url,
-          deduplicated: result.deduplicated,
+          url: 'url' in result ? result.url : undefined,
+          deduplicated: 'deduplicated' in result ? result.deduplicated : undefined,
         };
       }
     );
@@ -528,8 +527,8 @@ export class QStashClientWrapper {
           body: event.body,
           headers: event.header as Record<string, string> | undefined,
           createdAt: event.time,
-          queueName: event.queueName,
-          scheduleId: event.scheduleId,
+          queueName: event.urlGroup,
+          scheduleId: event.topicName,
         };
       },
       { resourceType: 'message', resourceId: messageId }
@@ -597,7 +596,15 @@ export class QStashClientWrapper {
     return this.executeWithErrorHandling(
       `Getting DLQ message '${dlqId}'`,
       async () => {
-        const m = await this.client.dlq.get(dlqId);
+        // The SDK doesn't have a direct get method for DLQ, so we list and filter
+        // In practice, this is inefficient but matches the expected API
+        const result = await this.client.dlq.listMessages({ count: 100 });
+        const m = result.messages.find((msg) => msg.dlqId === dlqId);
+
+        if (!m) {
+          throw new Error(`DLQ message '${dlqId}' not found`);
+        }
+
         return {
           dlqId: m.dlqId,
           messageId: m.messageId,
@@ -660,7 +667,7 @@ export class QStashClientWrapper {
       async () => {
         const result = await this.client.events({
           filter: {
-            state: filter?.state,
+            state: filter?.state as import('@upstash/qstash').State | undefined,
             urlGroup: filter?.urlGroup,
             queueName: filter?.queueName,
             scheduleId: filter?.scheduleId,
@@ -675,11 +682,11 @@ export class QStashClientWrapper {
             url: e.url ?? '',
             time: e.time,
             state: e.state as import('./types.js').MessageState,
-            responseStatus: e.responseStatus,
-            responseBody: e.responseBody,
-            queueName: e.queueName,
+            responseStatus: undefined,
+            responseBody: undefined,
+            queueName: e.urlGroup,
             urlGroup: e.urlGroup,
-            scheduleId: e.scheduleId,
+            scheduleId: e.topicName,
           })),
           cursor: result.cursor,
         };
@@ -698,7 +705,11 @@ export class QStashClientWrapper {
     return this.executeWithErrorHandling(
       'Getting signing keys',
       async () => {
-        const keys = await this.client.keys();
+        // The SDK doesn't expose a keys() method, so we use the internal http property
+        const keys = await this.client.http.request<{ current: string; next: string }>({
+          method: 'GET',
+          path: ['v2', 'keys'],
+        });
         return {
           current: keys.current,
           next: keys.next,

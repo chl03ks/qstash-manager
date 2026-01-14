@@ -87,7 +87,7 @@ export interface OperationResult<T> {
 /**
  * Token resolution source type
  */
-export type TokenSource = 'cli' | 'env' | 'config';
+export type TokenSource = 'cli' | 'env' | 'config' | 'prompt';
 
 /**
  * Information about the current token

@@ -243,7 +243,6 @@ async function rotateSigningKeys(client: QStashClientWrapper): Promise<void> {
       // Since the SDK doesn't expose this, we need to make a direct call
       // Using the client's internal request mechanism
 
-      // @ts-expect-error - Accessing internal http property for rotation endpoint
       const response = await underlyingClient.http.request({
         method: 'POST',
         path: ['v2', 'keys', 'rotate'],

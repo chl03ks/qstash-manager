@@ -182,7 +182,8 @@ export type MessageState =
   | 'ERROR'
   | 'FAILED'
   | 'RETRY'
-  | 'CANCELLED';
+  | 'CANCELED'
+  | 'IN_PROGRESS';
 
 /**
  * A published message

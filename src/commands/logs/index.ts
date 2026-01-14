@@ -8,6 +8,8 @@
  * - Message detail viewing
  */
 
+import * as p from '@clack/prompts';
+
 import type { LogEntry, LogFilter } from '../../types/qstash.js';
 import type { LogsMenuAction, LogTimeRange, MenuOption } from '../../types/commands.js';
 import { getConfigManager } from '../../lib/config/manager.js';
@@ -21,7 +23,6 @@ import {
   formatUrl,
   note,
   select,
-  spinner,
   truncate,
   UserCancelledError,
 } from '../../lib/ui/index.js';
@@ -184,7 +185,7 @@ async function viewLogs(
     filter.state = 'FAILED';
   }
 
-  const s = spinner();
+  const s = p.spinner();
   s.start(`Loading logs (${timeRangeOption.label.toLowerCase()})...`);
 
   const result = await client.getLogs(filter);
