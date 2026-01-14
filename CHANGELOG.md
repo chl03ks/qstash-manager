@@ -1,3 +1,9 @@
+## [0.1.1](https://github.com/chl03ks/qstash-manager/compare/v0.1.0...v0.1.1) (2026-01-14)
+
+### Bug Fixes
+
+* resolve undefined toString error when fetching logs ([708f486](https://github.com/chl03ks/qstash-manager/commit/708f4867de8d52027627b680278b6363f6918d4f))
+
 # Changelog
 
 All notable changes to this project will be documented in this file.

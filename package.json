@@ -1,6 +1,6 @@
 {
   "name": "qstash-manager",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Interactive CLI for managing QStash - URL groups, schedules, queues, messages, and monitoring",
   "keywords": [
     "qstash",
@@ -66,6 +66,7 @@
     "@typescript-eslint/eslint-plugin": "^6.19.0",
     "@typescript-eslint/parser": "^6.19.0",
     "@vitest/coverage-v8": "^1.2.0",
+    "conventional-changelog-conventionalcommits": "^9.1.0",
     "eslint": "^8.56.0",
     "semantic-release": "^24.2.9",
     "tsup": "^8.0.0",
