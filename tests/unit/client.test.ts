@@ -56,6 +56,9 @@ vi.mock('@upstash/qstash', () => {
       events: vi.fn(),
       keys: vi.fn(),
       publishJSON: vi.fn(),
+      http: {
+        request: vi.fn(),
+      },
     })),
   };
 });
@@ -333,10 +336,17 @@ describe('QStashClientWrapper', () => {
   describe('Queue Operations', () => {
     it('should list queues successfully', async () => {
       const mockClient = wrapper.getClient();
-      // Need to mock queue.list differently
-      (mockClient.queue as any).list = vi.fn().mockResolvedValue([
-        { name: 'queue1', parallelism: 1 },
-      ]);
+      // Mock queue() to return an object with list method
+      (mockClient.queue as any).mockReturnValue({
+        list: vi.fn().mockResolvedValue([
+          { name: 'queue1', parallelism: 1, paused: false }
+        ]),
+        get: vi.fn(),
+        upsert: vi.fn(),
+        pause: vi.fn(),
+        resume: vi.fn(),
+        delete: vi.fn(),
+      });
 
       const result = await wrapper.listQueues();
 
@@ -377,7 +387,7 @@ describe('QStashClientWrapper', () => {
   describe('Signing Keys', () => {
     it('should get signing keys', async () => {
       const mockClient = wrapper.getClient();
-      vi.mocked(mockClient.keys).mockResolvedValue({
+      vi.mocked(mockClient.http.request).mockResolvedValue({
         current: 'current-key',
         next: 'next-key',
       });
