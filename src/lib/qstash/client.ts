@@ -665,15 +665,30 @@ export class QStashClientWrapper {
     return this.executeWithErrorHandling(
       'Getting logs',
       async () => {
+        // Build filter object conditionally to avoid passing undefined values
+        const eventFilter: Record<string, any> = {};
+
+        if (filter?.state) {
+          eventFilter.state = filter.state as import('@upstash/qstash').State;
+        }
+        if (filter?.urlGroup) {
+          eventFilter.urlGroup = filter.urlGroup;
+        }
+        if (filter?.queueName) {
+          eventFilter.queueName = filter.queueName;
+        }
+        if (filter?.scheduleId) {
+          eventFilter.scheduleId = filter.scheduleId;
+        }
+        if (filter?.startTime !== undefined) {
+          eventFilter.fromDate = filter.startTime;
+        }
+        if (filter?.endTime !== undefined) {
+          eventFilter.toDate = filter.endTime;
+        }
+
         const result = await this.client.events({
-          filter: {
-            state: filter?.state as import('@upstash/qstash').State | undefined,
-            urlGroup: filter?.urlGroup,
-            queueName: filter?.queueName,
-            scheduleId: filter?.scheduleId,
-            fromDate: filter?.startTime,
-            toDate: filter?.endTime,
-          },
+          filter: eventFilter,
         });
 
         return {
